@@ -26,6 +26,16 @@
             background-color: #000000;
             overflow: hidden;
         }
+
+        @media (max-width: 768px) {
+            body {
+                overflow: auto;
+            }
+
+            #kinetic-bg {
+                display: none;
+            }
+        }
         
         #root {
             z-index: 10;
@@ -249,7 +259,7 @@
 
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzr-J7c-ziud8NCkZEV8q0Ga8v1nuEK6hY2dJk0-7R5mOFnYq5BFJ6Si03vh3qbqm8Eag/exec";
         
-        const LOGO_BASE64 = "data:image/png;base64,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";
+        const LOGO_URL = "public/Iso-Datapop.png";
 
         const sections = [
             { 
@@ -339,11 +349,15 @@
                 let glitchIntensity = 0;
                 const fullText = TEXT + ' '.repeat(PADDING_CHARS);
 
-                const debounce = (func, delay) => {
-                    let timeout;
+               const debounce = (func) => {
+                    let frame;
                     return (...args) => {
-                        clearTimeout(timeout);
-                        timeout = setTimeout(() => func(...args), delay);
+                        if (frame) {
+                            cancelAnimationFrame(frame);
+                        }
+                        frame = requestAnimationFrame(() => {
+                            func(...args);
+                        });
                     };
                 };
             
@@ -450,11 +464,12 @@
             );
         };
 
-        const BackgroundLogo = () => (
+       const BackgroundLogo = () => (
             <a 
                 href="https://www.datapop.fun/"
                 className="background-logo"
                 aria-label="Ir a la página de inicio de Datapop"
+                style={{ backgroundImage: `url(${LOGO_URL})` }}
             ></a>
         );
 
@@ -472,18 +487,11 @@
             
             const currentQuestionData = sections[currentSectionIndex]?.questions[currentQuestionIndex];
 
-            useEffect(() => {
-                if (!currentQuestionData) return;
-                const data = formData[currentQuestionData.id];
-                let isComplete = (data && (Array.isArray(data) ? data.length > 0 : String(data).trim() !== ''));
-                setIsStepComplete(isComplete);
-            }, [formData, currentQuestionIndex, currentSectionIndex]);
-
             const totalQuestions = sections.reduce((total, section) => total + section.questions.length, 0);
             const questionsAnswered = sections.slice(0, currentSectionIndex).reduce((total, section) => total + section.questions.length, 0) + currentQuestionIndex;
             const progressPercentage = (questionsAnswered / totalQuestions) * 100;
 
-            const handleInputChange = (e) => {
+            const handleInputChange = useCallback((e) => {
                 const { name, value, type, checked } = e.target;
                 setFormData(prevData => {
                     if (type === 'checkbox') {
@@ -493,8 +501,15 @@
                     }
                     return { ...prevData, [name]: value };
                 });
-            };
+            }, []);
             
+            useEffect(() => {
+                if (!currentQuestionData) return;
+                const data = formData[currentQuestionData.id];
+                let isComplete = (data && (Array.isArray(data) ? data.length > 0 : String(data).trim() !== ''));
+                setIsStepComplete(isComplete);
+            }, [formData, currentQuestionIndex, currentQuestionData?.id]);
+
             const handleFormSubmit = (finalData) => {
                 setView('submitting');
                 
