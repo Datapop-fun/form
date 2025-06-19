@@ -6,19 +6,19 @@
     <title>DataPop | Conecta con los Datos</title>
     
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com" integrity="sha256-placeholder" crossorigin="anonymous"></script>
     
     <!-- React -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" integrity="sha256-placeholder" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" integrity="sha256-placeholder" crossorigin="anonymous"></script>
     
     <!-- Babel -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js" integrity="sha256-placeholder" crossorigin="anonymous"></script>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" integrity="sha256-placeholder" crossorigin="anonymous">
     
     <style>
         body {
@@ -500,12 +500,29 @@
                 
                 fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
+                    // mode: 'no-cors', // REMOVED
+                    headers: { 'Content-Type': 'application/json' }, // Keep or ensure this header is appropriate
                     body: JSON.stringify(finalData)
                 })
-                .then(() => { setSubmissionStatus('success'); setView('finished'); })
-                .catch(error => { console.error('Error al enviar el formulario:', error); setSubmissionStatus('error'); setView('finished'); });
+                .then(response => {
+                    if (!response.ok) {
+                        // Try to get error message from server if possible
+                        return response.json().catch(() => response.text()).then(errBody => {
+                             throw new Error(`Server responded with ${response.status}: ${typeof errBody === 'string' ? errBody : JSON.stringify(errBody)}`);
+                        });
+                    }
+                    return response.json(); // Assuming the Google Script will return JSON
+                })
+                .then(data => {
+                    console.log('Success:', data); // Log success data from server
+                    setSubmissionStatus('success');
+                    setView('finished');
+                })
+                .catch(error => {
+                    console.error('Error al enviar el formulario:', error);
+                    setSubmissionStatus('error');
+                    setView('finished');
+                });
             };
 
             const nextStep = () => {
